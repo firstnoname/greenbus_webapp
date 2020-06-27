@@ -1,0 +1,70 @@
+{% include "header.html" %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Timetable Info</title>
+</head>
+
+<body>
+  <div class="container">
+    <p>
+      Yello !!! {{session.get('firstname')}} {{session.get('lastname')}} ({{session.get('emp_role')}})
+    </p>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">เที่ยวรถ</th>
+            <th scope="col">สาย</th>
+            <th scope="col">เส้นทาง</th>
+            <th scope="col">มาตรฐานรถ</th>
+            <th scope="col">ไป / กลับ</th>
+            <th scope="col">วันที่</th>
+            <th scope="col">เวลาออกจากต้นทาง</th>
+            <th scope="col">วันที่ถึงปลายทาง</th>
+            <th scope="col">เวลาถึงปลายทาง</th>
+            <th scope="col">รถโดยสาร</th>
+            <th scope="col">พนักงานต้อนรับบนรถโดยสาร</th>
+            <th scope="col">พนักงานขับรถโดยสารประจำทาง</th>
+            <th scope="col">ชนิดเที่ยว</th>
+            <th scope="col">สถานะการวิ่ง</th>
+            <th scope="col">สถานะของเที่ยว</th>
+            <th scope="col">สถานะการอนุมัติ</th>
+            <th scope="col">แก้ไข</th>
+            <th scope="col">ดูข้อมูล</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in datas %}
+          <tr>
+            <th scope="row">{{ row.1 }}</th>
+            <td>{{ row.2 }}</td>
+            <td>{{ row.3 }}</td>
+            <td>{{ row.4 }}</td>
+            <td>{{ row.5 }}</td>
+            <td>{{ row.6 }}</td>
+            <td>{{ row.7 }}</td>
+            <td>{{ row.8 }}</td>
+            <td>{{ row.9 }}</td>
+            <td>{{ row.10 }}</td>
+            <td>{{ row.11 }}</td>
+            <td>{{ row.12 }}</td>
+            <td>{{ row.13 }}</td>
+            <td>{{ row.14 }}</td>
+            <td>{{ row.15 }}</td>
+            <td>{{ row.16 }}</td>
+            <td>{{ row.17 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+</html>
+
+{% include "footer.html" %}
