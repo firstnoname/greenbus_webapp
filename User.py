@@ -23,6 +23,7 @@ def CheckLogin():
         print("จำนวนแถวในการเจอข้อมูล login = " + str(len(rows)))
         if len(rows) > 0:
             session['username'] = username
+            session['emp_id'] = rows[0][0]
             session['firstname'] = rows[0][1]
             session['lastname'] = rows[0][2]
             session['emp_role'] = rows[0][3]

@@ -17,11 +17,67 @@ def TimetableInfo():
         return render_template("Timetable/timetable_info.html", header_name = "Timetable Info", datas=schedule_info_rows, session=session)
 
 
+@timetable.route("/staffRegisterRoute", methods=["POST"])
+def StaffRegisterRoute():
+    if request.method == "POST":
+        schedule_id = request.form["schedule_id"]
+        emp_name = request.form['emp_name']
+        emp_id = request.form['emp_id']
+        emp_role = request.form['emp_role']
+        if emp_role == 'พนักงานขับรถ':
+            with con:
+                cur = con.cursor()
+                sql = "UPDATE tbl_schedule_info SET emp_driver_name = %s, emp_driver_id = %s WHERE schedule_id = %s"
+                cur.execute(sql, (emp_name, emp_id, schedule_id))
+                con.commit()
+                return redirect(url_for('timetable.TimetableInfo'))
+        else:
+            with con:
+                cur = con.cursor()
+                sql = "UPDATE tbl_schedule_info SET emp_reception_name = %s, emp_reception_id = %s WHERE schedule_id = %s"
+                cur.execute(sql, (emp_name, emp_id, schedule_id))
+                con.commit()
+                return redirect(url_for('timetable.TimetableInfo'))
+
+
+@timetable.route("/staffUnregisteRoute", methods=["POST"])
+def StaffUnregisterRoute():
+    if request.method == "POST":
+        schedule_id = request.form["schedule_id"]
+        emp_name = request.form['emp_name']
+        emp_id = request.form['emp_id']
+        emp_role = request.form['emp_role']
+        if emp_role == 'พนักงานขับรถ':
+            with con:
+                cur = con.cursor()
+                sql = "UPDATE tbl_schedule_info SET emp_driver_name = '', emp_driver_id = '' WHERE schedule_id = %s"
+                cur.execute(sql, (schedule_id))
+                con.commit()
+                return redirect(url_for('timetable.TimetableInfo'))
+        else:
+            with con:
+                cur = con.cursor()
+                sql = "UPDATE tbl_schedule_info SET emp_reception_name = '', emp_reception_id = '' WHERE schedule_id = %s"
+                cur.execute(sql, (schedule_id))
+                con.commit()
+                return redirect(url_for('timetable.TimetableInfo'))
+
+
 @timetable.route("/busDriverInfo")
 def BusDriverInfo():
-    return render_template("Timetable/bus_driver_info.html", header_name = "Bus driver info")
+    with con:
+        cur = con.cursor()
+        sql = "SELECT * FROM `tbl_schedule_info` WHERE emp_driver_id != 0"
+        cur.execute(sql)
+        schedule_info_rows = cur.fetchall()
+        return render_template("Timetable/bus_driver_info.html", header_name = "Bus driver info", datas=schedule_info_rows)
 
 
 @timetable.route("/busReceptionInfo")
 def BusReceptionInfo():
-    return render_template("Timetable/bus_reception_info.html", header_name = "Bus reception info")
+    with con:
+        cur = con.cursor()
+        sql = "SELECT * FROM `tbl_schedule_info` WHERE emp_reception_id != 0"
+        cur.execute(sql)
+        schedule_info_rows = cur.fetchall()
+        return render_template("Timetable/bus_reception_info.html", header_name = "Bus reception info", datas=schedule_info_rows)

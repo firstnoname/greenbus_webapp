@@ -50,14 +50,90 @@
             <td>{{ row.8 }}</td>
             <td>{{ row.9 }}</td>
             <td>{{ row.10 }}</td>
-            <td>{{ row.11 }}</td>
-            <td>{{ row.12 }}</td>
-            <td>{{ row.13 }}</td>
-            <td>{{ row.14 }}</td>
+            <td>
+              {% if session.get('emp_role') == 'พนักงานต้อนรับ' %}
+                {% if row.11 == '' and session.get('emp_role') == 'พนักงานต้อนรับ' %}
+                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalEdit{{row.0}}">ลงชื่อ</button>
+                {% else %}
+                  {{ row.11 }}
+                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCancel{{row.0}}">ยกเลิก</button>
+                {% endif %}
+              {% else %}
+                {{ row.11 }}
+              {% endif %}
+            </td>
+            <td>
+              {% if session.get('emp_role') == 'พนักงานขับรถ' %}
+                {% if row.13 == '' %}
+                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalEdit{{row.0}}">ลงชื่อ</button>
+                {% else %}
+                  {{ row.13 }}
+                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCancel{{row.0}}">ยกเลิก</button>
+                {% endif %}
+              {% else %}
+                {{ row.13}}
+              {% endif %}
+            </td>
             <td>{{ row.15 }}</td>
             <td>{{ row.16 }}</td>
             <td>{{ row.17 }}</td>
+            <td>{{ row.18 }}</td>
+            <td>{{ row.19 }}</td>
           </tr>
+          <!-- Modal -->
+          <div class="modal fade" id="modalEdit{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">ยืนยันการลงชื่อ</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="{{ url_for('timetable.StaffRegisterRoute') }}" method="POST">
+                  <input type="hidden" value="{{ row.0 }}" name="schedule_id">
+                  <input type="hidden" value="{{session.get('emp_id')}}" name="emp_id">
+                  <input type="hidden" value="{{session.get('emp_role')}}" name="emp_role">
+                  <input type="hidden" value="{{session.get('firstname')}} {{session.get('lastname')}}" name="emp_name">
+                  <div class="modal-body">
+                    <h4>ต้องการลงชื่อเส้นทาง {{ row.3 }} เวลาออก {{ row.6 }} หรือไม่</h4>
+                  </div>
+                  <input type="hidden" name="id" value="{{row.0}}" />
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Modal cancel booking -->
+          <div class="modal fade" id="modalCancel{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">ยกเลิกการลงชื่อ</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="{{ url_for('timetable.StaffUnregisterRoute') }}" method="POST">
+                  <input type="hidden" value="{{ row.0 }}" name="schedule_id">
+                  <input type="hidden" value="{{session.get('emp_id')}}" name="emp_id">
+                  <input type="hidden" value="{{session.get('emp_role')}}" name="emp_role">
+                  <input type="hidden" value="{{session.get('firstname')}} {{session.get('lastname')}}" name="emp_name">
+                  <div class="modal-body">
+                    <h4>ต้องการลงชื่อเส้นทาง {{ row.3 }} เวลาออก {{ row.6 }} หรือไม่</h4>
+                  </div>
+                  <input type="hidden" name="id" value="{{row.0}}" />
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-danger">ยืนยัน</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
           {% endfor %}
         </tbody>
       </table>

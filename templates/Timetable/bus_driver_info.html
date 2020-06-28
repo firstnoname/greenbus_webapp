@@ -14,7 +14,7 @@
   <div class="container">
     <h4 class="text-center">แบบตรวจ QC มาตรฐานการปฏิบัติงานพนักงานประจำรถ</h4>
     <h4 class="text-center">ประจำวันที่ 25 เดือน มิถุนายน พ.ศ. 2563</h4>
-    <h5 class="text-center">(ขาไป - สำหรับพนักงานขับรถ)</h5>"
+    <h5 class="text-center">(ขาไป - สำหรับพนักงานขับรถ)</h5>
     <div class="table-responsive">
       <table class="table table-bordered">
         <thead>
@@ -31,9 +31,10 @@
           </tr>
         </thead>
         <tbody>
+          {% for row in datas %}
           <tr>
             <th scope="row">1</th>
-            <th>ชื่อ - นามสกุล</th>
+            <th>{{ row.13 }}</th>
             <th>09.00</th>
             <th>16.00</th>
             <th>
@@ -54,6 +55,7 @@
             <th>ชื่ผู้ตรวจ</th>
             <th>-</th>
           </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
