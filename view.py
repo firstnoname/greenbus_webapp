@@ -1,6 +1,8 @@
 from flask import Flask, render_template
 from Timetable import *
 from User import *
+from Inspector import *
+from DataAnalys import *
 from datetime import timedelta
 
 app = Flask(__name__)
@@ -8,6 +10,8 @@ app.secret_key = "greenbus"
 app.permanent_session_lifetime = timedelta(minutes=15)
 app.register_blueprint(timetable)
 app.register_blueprint(user)
+app.register_blueprint(inspector)
+app.register_blueprint(dataAnalys)
 
 @app.route("/")
 def index():

@@ -12,6 +12,7 @@
   <div class="container">
     <p>
       Yello !!! {{session.get('firstname')}} {{session.get('lastname')}} ({{session.get('emp_role')}})
+      <h5 align="right"><a href="/logout">Logout</a></h5>
     </p>
     <div class="table-responsive">
       <table class="table table-bordered">
@@ -52,26 +53,26 @@
             <td>{{ row.10 }}</td>
             <td>
               {% if session.get('emp_role') == 'พนักงานต้อนรับ' %}
-                {% if row.11 == '' and session.get('emp_role') == 'พนักงานต้อนรับ' %}
-                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalEdit{{row.0}}">ลงชื่อ</button>
-                {% else %}
-                  {{ row.11 }}
-                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCancel{{row.0}}">ยกเลิก</button>
-                {% endif %}
+              {% if row.11 == '' and session.get('emp_role') == 'พนักงานต้อนรับ' %}
+              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalEdit{{row.0}}">ลงชื่อ</button>
               {% else %}
-                {{ row.11 }}
+              {{ row.11 }}
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCancel{{row.0}}">ยกเลิก</button>
+              {% endif %}
+              {% else %}
+              {{ row.11 }}
               {% endif %}
             </td>
             <td>
               {% if session.get('emp_role') == 'พนักงานขับรถ' %}
-                {% if row.13 == '' %}
-                  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalEdit{{row.0}}">ลงชื่อ</button>
-                {% else %}
-                  {{ row.13 }}
-                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCancel{{row.0}}">ยกเลิก</button>
-                {% endif %}
+              {% if row.13 == '' %}
+              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalEdit{{row.0}}">ลงชื่อ</button>
               {% else %}
-                {{ row.13}}
+              {{ row.13 }}
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCancel{{row.0}}">ยกเลิก</button>
+              {% endif %}
+              {% else %}
+              {{ row.13}}
               {% endif %}
             </td>
             <td>{{ row.15 }}</td>

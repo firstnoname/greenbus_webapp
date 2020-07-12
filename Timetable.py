@@ -61,23 +61,3 @@ def StaffUnregisterRoute():
                 cur.execute(sql, (schedule_id))
                 con.commit()
                 return redirect(url_for('timetable.TimetableInfo'))
-
-
-@timetable.route("/busDriverInfo")
-def BusDriverInfo():
-    with con:
-        cur = con.cursor()
-        sql = "SELECT * FROM `tbl_schedule_info` WHERE emp_driver_id != 0"
-        cur.execute(sql)
-        schedule_info_rows = cur.fetchall()
-        return render_template("Timetable/bus_driver_info.html", header_name = "Bus driver info", datas=schedule_info_rows)
-
-
-@timetable.route("/busReceptionInfo")
-def BusReceptionInfo():
-    with con:
-        cur = con.cursor()
-        sql = "SELECT * FROM `tbl_schedule_info` WHERE emp_reception_id != 0"
-        cur.execute(sql)
-        schedule_info_rows = cur.fetchall()
-        return render_template("Timetable/bus_reception_info.html", header_name = "Bus reception info", datas=schedule_info_rows)

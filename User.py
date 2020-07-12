@@ -33,6 +33,13 @@ def CheckLogin():
         else:
             return "ไม่พบ username"
 
+
+@user.route("/logout")
+def Logout():
+    session.clear()
+    return redirect(url_for('user.UserLogin'))
+
+
 @user.route("/register")
 def Register():
     return render_template("User/register.html")

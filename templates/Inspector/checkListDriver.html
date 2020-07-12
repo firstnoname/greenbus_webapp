@@ -1,0 +1,106 @@
+{% include "header.html" %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Timetable Info</title>
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h4 class="text-center">แบบตรวจ QC มาตรฐานการปฏิบัติงานพนักงานประจำรถ</h4>
+    <h4 class="text-center">ประจำวันที่ 25 เดือน มิถุนายน พ.ศ. 2563</h4>
+    <h5 class="text-center">(ขาไป - สำหรับพนักงานขับรถ)</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">ลำดับ</th>
+            <th scope="col">ชื่อ - นามสกุล</th>
+            <th scope="col">เวลางาน</th>
+            <th scope="col">คิวออก (เวลา)</th>
+            <th scope="col">การแต่งกาย</th>
+            <th scope="col">ใบอนุญาติ</th>
+            <th scope="col">ตรวจวัดแอลกอฮอล์</th>
+            <th scope="col">ลงชื่อ</th>
+            <th scope="col">หมายเหตุ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in datas %}
+          <form action="{{ url_for('inspector.SubmitCheckListDriver') }}" method="POST">
+            <tr>
+              <th scope="row">1</th>
+              <th>{{ row.13 }}</th>
+              <th>09.00</th>
+              <th>16.00</th>
+              <th>
+                <div class="checkbox">
+                  <input type="checkbox" name="check_costume" value="OK" />
+                </div>
+                <div class="checkbox">
+                  <input name="chk_costume" value="OK" type="checkbox" checked data-toggle="toggle" data-on="ผ่าน" data-off="ไม่ผ่าน" data-onstyle="success" data-offstyle="danger">
+                </div>
+              </th>
+              <th>
+                <div class="checkbox">
+                  <input type="checkbox" name="check_license" value="OK" />
+                </div>
+                <div class="checkbox">
+                  <input name="chk_license" type="checkbox" checked data-toggle="toggle" data-on="ผ่าน" data-off="ไม่ผ่าน" data-onstyle="success" data-offstyle="danger">
+                </div>
+              </th>
+              <th>
+                <div class="checkbox">
+                  <input type="checkbox" name="check_alcohol" value="OK" />
+                </div>
+                <div class="checkbox">
+                  <input name="chk_alcohol" type="checkbox" checked data-toggle="toggle" data-on="ผ่าน" data-off="ไม่ผ่าน" data-onstyle="success" data-offstyle="danger">
+                </div>
+              </th>
+              <th><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEdit{{row.0}}">ยืนยัน</button></th>
+              <th>-</th>
+            </tr>
+            <!-- Submit checklist -->
+            <div class="modal fade" id="modalEdit{{row.0}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ยืนยันการตรวจสอบ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <input type="hidden" value="{{ row.0 }}" name="schedule_id">
+                  <input type="hidden" vlaue="{{ row.13 }}" name="driver_id">
+                  <input type="hidden" value="{{session.get('emp_id')}}" name="emp_id">
+                  <input type="hidden" value="{{session.get('emp_role')}}" name="emp_role">
+                  <input type="hidden" value="{{session.get('firstname')}} {{session.get('lastname')}}" name="emp_name">
+                  <input type="hidden" value="{{ row.14 }}" name="driver_id">
+                  <div class="modal-body">
+                    <h4>ยืนยันการตรวจสอบพักงานชื่อ {{ row.13 }}</h4>
+                  </div>
+                  <input type="hidden" name="id" value="{{row.0}}" />
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </form>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+</html>
+
+{% include "footer.html" %}

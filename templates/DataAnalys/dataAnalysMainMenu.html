@@ -1,0 +1,269 @@
+{% include "header.html" %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Timetable Info</title>
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h4 class="text-center">แบบตรวจ QC มาตรฐานการปฏิบัติงานพนักงานประจำรถ</h4>
+    <h4 class="text-center">ประจำวันที่ 25 เดือน มิถุนายน พ.ศ. 2563</h4>
+    <div class="table-responsive">
+      <canvas id="myChart" width="600" height="400"></canvas>
+      <p id="caption">กราฟแสดงรายได้ของบริษัท Green bus.</p>
+      <canvas id="stackBar" width="600" height="400"></canvas>
+      <p id="caption">กราฟแสดงต้นทุนที่บริษัทต้องจ่าย.</p>
+      <canvas id="lineChart" width="600" height="400"></canvas>
+      <p id="caption">กราฟแสดงจำนวนพนักงานที่มาทำงาน.</p>
+
+      <script>
+      // Global parameters:
+      // do not resize the chart canvas when its container does (keep at 600x400px)
+      Chart.defaults.global.responsive = false;
+
+      // define the chart data
+      var chartData = {
+      labels : [{% for item in labels %}
+      "{{item}}",
+      {% endfor %}],
+      datasets : [{
+        label: 'รายได้',
+        fill: true,
+        lineTension: 0.1,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data : [{% for item in values %}
+        {{item}},
+        {% endfor %}],
+        spanGaps: false
+      },
+      {
+              label: 'Target',
+              data: [43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000,43000],
+
+              // Changes this dataset to become a line
+              type: 'line'
+          }]
+      }
+
+      // get chart canvas
+      var ctx = document.getElementById("myChart").getContext("2d");
+
+      // create the chart using the chart canvas
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+      });
+
+      // Stacked bar
+      var stackedChartData = {
+      labels : [{% for item in labels %}
+      "{{item}}",
+      {% endfor %}],
+      datasets : [{
+        label: 'ค่าบำรุงรถ',
+        fill: true,
+        lineTension: 0.1,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data : [{% for item in cost_values_maintainance %}
+        {{item}},
+        {% endfor %}],
+        spanGaps: false
+      },{
+        label: 'ค่าเชื้อเพลิง',
+        fill: true,
+        lineTension: 0.1,
+        backgroundColor: "rgba(242,234,56,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data : [{% for item in cost_values_fuel %}
+        {{item}},
+        {% endfor %}],
+        spanGaps: false
+      },
+      {
+        label: 'ค่า พนง. ขับรถ',
+        fill: true,
+        lineTension: 0.1,
+        backgroundColor: "rgba(245,123,246,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data : [{% for item in cost_values_driver %}
+        {{item}},
+        {% endfor %}],
+        spanGaps: false
+      },
+      {
+        label: 'ค่า พนง. ต้อนรับ',
+        fill: true,
+        lineTension: 0.1,
+        backgroundColor: "rgba(98,236,177,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data : [{% for item in cost_values_reception %}
+        {{item}},
+        {% endfor %}],
+        spanGaps: false
+      },
+      {
+              label: 'Target',
+              borderColor: "rgba(242,117,117,1)",
+              data: [3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000],
+
+              // Changes this dataset to become a line
+              type: 'line'
+          }]
+      }
+
+      var ctx = document.getElementById("stackBar").getContext("2d");
+      var stackedBar = new Chart(ctx, {
+          type: 'bar',
+          data: stackedChartData,
+          options: {
+              scales: {
+                  xAxes: [{
+                      stacked: true
+                  }],
+                  yAxes: [{
+                      stacked: true
+                  }]
+              }
+          }
+      });
+
+      // Line chart
+      var lineChartData = {
+      labels : [{% for item in labels %}
+      "{{item}}",
+      {% endfor %}],
+      datasets: [
+        {
+            label: "พนักงานขับรถ",
+            data: [{% for item in workday_driver %}
+            {{item}},
+            {% endfor %}],
+            backgroundColor: "blue",
+            borderColor: "lightblue",
+            fill: false,
+            lineTension: 0,
+            radius: 5
+          },
+          {
+            label: "พนักงานต้อนรับ",
+            data: [{% for item in workday_reception %}
+            {{item}},
+            {% endfor %}],
+            backgroundColor: "green",
+            borderColor: "lightgreen",
+            fill: false,
+            lineTension: 0,
+            radius: 5
+          }
+        ]
+      }
+
+      var options = {
+        responsive: true,
+        title: {
+          display: true,
+          position: "top",
+          text: "จำนวนพนักงานที่มาทำงาน",
+          fontSize: 18,
+          fontColor: "#111"
+        },
+        legend: {
+          display: true,
+          position: "bottom",
+          labels: {
+            fontColor: "#333",
+            fontSize: 16
+          }
+        }
+      };
+
+      var ctx = document.getElementById("lineChart").getContext("2d");
+      var stackedLine = new Chart(ctx, {
+      type: 'line',
+      data: lineChartData,
+      options: options
+      });
+
+      </script>
+
+    </div>
+  </div>
+</body>
+
+</html>
+
+{% include "footer.html" %}
